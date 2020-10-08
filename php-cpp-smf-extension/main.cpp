@@ -3,6 +3,9 @@
  *    This file implements SMF (Solace Message Format) wrapper using Solace CCSMP APIs (Solace C library)
  *    This is an expermimental and prototype implementation
  * 
+ * Requires
+ *  PHP-CPP (https://www.php-cpp.com/)
+ * 
  *  Usage
  *     See php/test-xxx.php and html/test-xxx.html files
  * 
@@ -17,23 +20,94 @@
 #include <phpcpp.h>
 #include <iostream>
 
-/* Session */
+/***************************************************************************************
+ * Globals 
+ * FIXME: Get rid of globals
+ * See https://www.php-cpp.com/documentation/extension-callbacks
+ ****************************************************************************************/
+
+// save session globally to access later
 solClient_opaqueSession_pt session_p;
 
-solClient_rxMsgCallback_returnCode_t messageReceiveCallback ( solClient_opaqueSession_pt opaqueSession_p, solClient_opaqueMsg_pt msg_p, void *user_p )
+// save dest for unsubscribe
+std::string g_dest ; // TODO: this should be an array
+
+/* message callback function name from php*/
+std::string g_php_msg_recv_cb_fn ;
+
+/* Message Count */
+static int g_msgcount = 0;
+
+int RC = 0 ; // If RC is not 0, don't proceed
+int Verbose = 0;
+
+/*****************************************************************************
+ * messageReceiveCallback
+ *
+ * The message callback is invoked for each Direct message received by
+ * the Session. In this sample, the message is printed to the screen.
+ *****************************************************************************/
+solClient_rxMsgCallback_returnCode_t
+messageReceiveCallback ( solClient_opaqueSession_pt opaqueSession_p, solClient_opaqueMsg_pt msg_p, void *user_p )
 {
+    if (Verbose) {
+        Php::out << "Received message: " << g_msgcount << std::endl ;
+        solClient_msg_dump ( msg_p, NULL, 0 ); printf ( "\n" );
+    }
+
+    solClient_destination_t msg_dest_p ;
+    void * msg_body_p = NULL;
+    solClient_uint32_t msg_body_sz;
+    //const char *msg_id_p = NULL;
+    //solClient_int64_t msg_rcv_ts_p ;
+
+    /*
+     * extract message details from the message ptr
+     */
+    solClient_msg_getDestination(msg_p, &msg_dest_p, sizeof(msg_dest_p)) ;
+    Php::out << "(" << g_msgcount << ") Received a message on destination  : " << msg_dest_p.dest  << std::endl ;
+  
+    solClient_msg_getBinaryAttachmentPtr (msg_p, &msg_body_p, &msg_body_sz) ;
+    char * msg_body_cp = (char *)msg_body_p ;
+    msg_body_cp[msg_body_sz] = 0 ;
+    if (Verbose) Php::out << "msg_body_p : " << msg_body_cp << std::endl ;
+
+    /*
+     * TODO: other things to extract 
+     * FIXME: This causes core dump 
+     * 
+    solClient_msg_getRcvTimestamp(msg_p, &msg_rcv_ts_p);
+    Php::out << "msg_rcv_ts_p   : " << msg_rcv_ts_p  << std::endl ;
+
+    solClient_msg_getApplicationMessageId(msg_p, &msg_id_p);
+    Php::out << "msg_id_p   : " << msg_id_p  << std::endl ;
+    */
+
+    /*
+     * Call the PHP callback function with message details
+     * FYI, This (call back PHP) is not recommended according to PHP-CPP site
+     */
+    Php::Value(g_php_msg_recv_cb_fn.c_str())( (char *)(msg_dest_p.dest),  
+                                               msg_body_cp);
+
+    g_msgcount++;
+
     return SOLCLIENT_CALLBACK_OK;
 }
 
+/*****************************************************************************
+ * eventCallback
+ *
+ * The event callback function is mandatory for session creation.
+ *****************************************************************************/
 void eventCallback ( solClient_opaqueSession_pt opaqueSession_p,
                 solClient_session_eventCallbackInfo_pt eventInfo_p, void *user_p )
 {
     if ( ( eventInfo_p->sessionEvent ) == SOLCLIENT_SESSION_EVENT_ACKNOWLEDGEMENT )
-        printf ( "Acknowledgement received!\n" );
+        Php::out << "Acknowledgement received!" << std::endl ;
 }
 
-int RC = 0 ; // If RC is not 0, don't proceed
-int Verbose = 0;
+
 
 
 /*************************************************************************
@@ -147,7 +221,7 @@ void solcw_connect () {
 /*************************************************************************
  * Publish
  *************************************************************************/
-void solcw_publish( Php::Parameters &params) {
+void solcw_publish_topic ( Php::Parameters &params) {
 
     if (Verbose) Php::out << "### solcw_publish called" << std::endl;
     if (RC != 0) {
@@ -163,7 +237,7 @@ void solcw_publish( Php::Parameters &params) {
     std::string data = (std::string)(params[1]) ;
 
     /* Allocate a message. */
-    Php::out << "Sending message to destination :" << dest << std::endl;
+    Php::out << "Sending message to topic :" << dest << std::endl;
     solClient_msg_alloc ( &msg_p );
 
     /* Set the delivery mode for the message. */
@@ -193,6 +267,48 @@ void solcw_publish( Php::Parameters &params) {
     SLEEP ( 2 );
 }
 
+
+/*************************************************************************
+ * Subscribe
+ *************************************************************************/
+void solcw_subscribe_topic ( Php::Parameters &params) {
+
+    if (Verbose) Php::out << "### solcw_subribe_topic called" << std::endl;
+    if (RC != 0) {
+        Php::out << "*** Something isn't right. Can't proceed" << std::endl;
+        return ;
+    }
+
+    std::string dest = (std::string)(params[0]) ;
+    // save destination & callback fn name globally
+    g_dest = dest;
+    g_php_msg_recv_cb_fn = (std::string)(params[1]) ;
+
+    Php::out << "Subscribing to topic : " << dest << " callback: " << g_php_msg_recv_cb_fn << std::endl;
+
+    RC = solClient_session_topicSubscribeExt ( session_p,
+                                          SOLCLIENT_SUBSCRIBE_FLAGS_WAITFORCONFIRM,
+                                          dest.c_str() );
+}
+
+/*************************************************************************
+ * Unsubscribe
+ *************************************************************************/
+void solcw_unsubscribe_topic () {
+
+    if (Verbose) Php::out << "### solcw_unsubscribe_topic called" << std::endl;
+    if (RC != 0) {
+        Php::out << "*** Something isn't right. Can't proceed" << std::endl;
+        return ;
+    }
+    //std::string dest = (std::string)(params[0]) ;
+    if (Verbose) Php::out << "Unubscribing to topic :" << g_dest << std::endl;
+
+    RC = solClient_session_topicUnsubscribeExt ( session_p,
+                                          SOLCLIENT_SUBSCRIBE_FLAGS_WAITFORCONFIRM,
+                                          g_dest.c_str() );
+}
+
 /*************************************************************************
  * CLEANUP & exit
  *************************************************************************/
@@ -216,7 +332,9 @@ extern "C" {
         static Php::Extension extension("solace-smf-wrapper", "1.0");
         extension.add<solcw_init>("solcw_init");
         extension.add<solcw_connect>("solcw_connect");
-        extension.add<solcw_publish>("solcw_publish");
+        extension.add<solcw_publish_topic>("solcw_publish_topic");
+        extension.add<solcw_subscribe_topic>("solcw_subscribe_topic");
+        extension.add<solcw_unsubscribe_topic>("solcw_unsubscribe_topic");
         extension.add<solcw_cleanup>("solcw_cleanup");
         return extension;
     }

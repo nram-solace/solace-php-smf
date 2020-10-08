@@ -1,5 +1,4 @@
+.gitignore
 **/*.so
 **/*.o
-.gitignore
 .vscode/**
-.gitignore
