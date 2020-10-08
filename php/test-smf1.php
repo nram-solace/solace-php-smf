@@ -1,10 +1,11 @@
 <?php
     echo("calling solace-smf-wrapper\n");
 
-    echo(solcw_init("localhost:55555", "default", "default", "default"));
+    echo(solcw_init("127.0.0.1:55555", "default", "default", "default", 0));
     echo(solcw_connect());
-    echo(solcw_publish("test/php/1", "Hello from PHP"));
-    echo(solcw_publish("test/php/2", "Hello again from php"));
+    for ($x = 0; $x < 2; $x++) {
+        echo(solcw_publish("test/php/$x", "Hello ($x) from PHP"));
+    }
     echo(solcw_cleanup());
 
     echo("done\n");

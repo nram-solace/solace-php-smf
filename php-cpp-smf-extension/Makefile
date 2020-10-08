@@ -33,7 +33,7 @@ INI_DIR				=	/usr/local/lib/php/pecl/20190902
 
 # Dir with PHP scripts
 PHP_DIR = ../php
-PHP_TEST_SCRIPT = sol-test1.php
+PHP_TEST_SCRIPT = test-smf1.php
 
 
 #
@@ -116,7 +116,7 @@ LINKER_DEPENDENCIES	=	${SOLCW_LIBS} -lphpcpp
 #
 
 RM					=	rm -f
-CP					=	cp -f
+CP					=	cp -fp
 MKDIR				=	mkdir -p
 
 
@@ -146,6 +146,7 @@ ${OBJECTS}:
 
 install:		
 						sudo ${CP} ${EXTENSION} ${EXTENSION_DIR}
+						ls -l ${EXTENSION} ${EXTENSION_DIR}/${EXTENSION}
 						#${CP} ${INI} ${INI_DIR}
 
 # Restart Apache
