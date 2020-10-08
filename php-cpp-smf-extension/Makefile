@@ -29,7 +29,11 @@ NAME				=	solace-smf-wrapper
 #	one for each extension. Use this variable to specify this directory.
 #
 
-INI_DIR				=	/etc/
+INI_DIR				=	/usr/local/lib/php/pecl/20190902
+
+# Dir with PHP scripts
+PHP_DIR = ../php
+PHP_TEST_SCRIPT = sol-test1.php
 
 
 #
@@ -141,9 +145,19 @@ ${OBJECTS}:
 						${COMPILER} ${COMPILER_FLAGS} $@ ${@:%.o=%.cpp}
 
 install:		
-						${CP} ${EXTENSION} ${EXTENSION_DIR}
-						${CP} ${INI} ${INI_DIR}
-				
+						sudo ${CP} ${EXTENSION} ${EXTENSION_DIR}
+						#${CP} ${INI} ${INI_DIR}
+
+# Restart Apache
+restart:		
+						sudo apachectl stop
+						sleep 2
+						sudo apachectl start
+
+# Run test script
+test:
+						php -f ${PHP_DIR}/${PHP_TEST_SCRIPT}	
+			
 clean:
 						${RM} ${EXTENSION} ${OBJECTS}
 
