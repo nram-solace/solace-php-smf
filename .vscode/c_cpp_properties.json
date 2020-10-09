@@ -4,7 +4,8 @@
             "name": "Mac",
             "includePath": [
                 "${workspaceFolder}/**",
-                "/opt/Solace/solclient/latest/include"
+                "/opt/Solace/solclient/latest/include",
+                "/Library/Developer/CommandLineTools/usr/include/c++/v1"
             ],
             "defines": [],
             "macFrameworkPath": [
