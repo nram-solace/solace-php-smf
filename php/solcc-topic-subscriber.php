@@ -18,13 +18,13 @@
     $msg_callback_fn = "php_msgReceiveCallback" ;
     $verbose = 0;
 
-    solcw_init($solace_url, $vpn, $user, $pass, $verbose);
-    solcw_connect();
-    solcw_subscribe_topic($sub_topic, $msg_callback_fn);
+    solcc_init($solace_url, $vpn, $user, $pass, $verbose);
+    solcc_connect();
+    solcc_subscribe_topic($sub_topic, $msg_callback_fn);
 
     sleep (120);
 
-    solcw_unsubscribe_topic();
-    solcw_cleanup();
+    solcc_unsubscribe_topic();
+    solcc_cleanup();
     echo("done\n");
 ?>

@@ -7,7 +7,7 @@
  *  PHP-CPP (https://www.php-cpp.com/)
  * 
  *  Usage
- *     See php/test-xxx.php and html/test-xxx.html files
+ *     See php/solcc-xxx.php and html/solcc-xxx.html files
  * 
  *  Author
  *    Ramesh Natarajan, Solace
@@ -176,11 +176,11 @@ flowMessageReceiveCallback ( solClient_opaqueFlow_pt opaqueFlow_p, solClient_opa
 /*************************************************************************
  * Initialize the API, Context, session
  *************************************************************************/
-void solcw_init( Php::Parameters &params) {
-    if (Verbose) Php::out << "### solcw_init called (1)"<< std::endl;
+void solcc_init( Php::Parameters &params) {
+    if (Verbose) Php::out << "### solcc_init called (1)"<< std::endl;
 
     if (params.size() != 5) {
-        Php::error << "solcw_init: incorrect number of arguments" << std::endl;
+        Php::error << "solcc_init: incorrect number of arguments" << std::endl;
         return ;
     }
     /*
@@ -272,11 +272,11 @@ void solcw_init( Php::Parameters &params) {
 /*************************************************************************
  * Connect to session
  *************************************************************************/
-void solcw_connect () {
-    if (Verbose) Php::out << "### solcw_connect called "<< std::endl;
+void solcc_connect () {
+    if (Verbose) Php::out << "### solcc_connect called "<< std::endl;
 
     if (RC != 0) {
-        Php::error << "solcw_connect: API/session not initialized" << std::endl;
+        Php::error << "solcc_connect: API/session not initialized" << std::endl;
         return ;
     }
     /* Connect the Session. */
@@ -290,16 +290,16 @@ void solcw_connect () {
 /*************************************************************************
  * Publish to topic
  *************************************************************************/
-void solcw_publish_topic ( Php::Parameters &params) {
+void solcc_publish_topic ( Php::Parameters &params) {
 
-    if (Verbose) Php::out << "### solcw_publish called" << std::endl;
+    if (Verbose) Php::out << "### solcc_publish called" << std::endl;
     if (RC != 0) {
-        Php::error << "solcw_publish_topic: API/session not initialized" << std::endl;
+        Php::error << "solcc_publish_topic: API/session not initialized" << std::endl;
         return ;
     }
 
     if (params.size() != 2) {
-        Php::error << "solcw_publish: incorrect number of arguments" << std::endl;
+        Php::error << "solcc_publish: incorrect number of arguments" << std::endl;
         return ;
     }
 
@@ -339,23 +339,23 @@ void solcw_publish_topic ( Php::Parameters &params) {
     solClient_msg_free ( &msg_p );
 
     /* Sleep to allow the message to be acknowledged. */
-    SLEEP ( 2 );
+    //SLEEP ( 2 );
 }
 
 
 /*************************************************************************
  * Publish to queue
  *************************************************************************/
-void solcw_publish_queue ( Php::Parameters &params) {
+void solcc_publish_queue ( Php::Parameters &params) {
 
-    if (Verbose) Php::out << "### solcw_publish_queue called" << std::endl;
+    if (Verbose) Php::out << "### solcc_publish_queue called" << std::endl;
     if (RC != 0) {
-        Php::error << "solcw_publish_queue: API/session not initialized" << std::endl;
+        Php::error << "solcc_publish_queue: API/session not initialized" << std::endl;
         return ;
     }
 
     if (params.size() != 3) {
-        Php::error << "solcw_publish_queue: incorrect number of arguments" << std::endl;
+        Php::error << "solcc_publish_queue: incorrect number of arguments" << std::endl;
         return ;
     }
 
@@ -373,7 +373,8 @@ void solcw_publish_queue ( Php::Parameters &params) {
 
     /* Set the delivery mode for the message. */
     int mode = SOLCLIENT_DELIVERY_MODE_NONPERSISTENT ;
-    if (m == 2 ) m = SOLCLIENT_DELIVERY_MODE_PERSISTENT ;
+    if (m == 2 ) mode = SOLCLIENT_DELIVERY_MODE_PERSISTENT ;
+    if (Verbose) Php::out << "Got ack mode " << m << " using " << mode << std::endl ;
 
     solClient_msg_setDeliveryMode ( msg_p, mode );
 
@@ -398,21 +399,21 @@ void solcw_publish_queue ( Php::Parameters &params) {
     solClient_msg_free ( &msg_p );
 
     /* Sleep to allow the message to be acknowledged. */
-    SLEEP ( 2 );
+    //SLEEP ( 2 );
 }
 
 /*************************************************************************
  * Subscribe
  *************************************************************************/
-void solcw_subscribe_topic ( Php::Parameters &params) {
+void solcc_subscribe_topic ( Php::Parameters &params) {
 
-    if (Verbose) Php::out << "### solcw_subribe_topic called" << std::endl;
+    if (Verbose) Php::out << "### solcc_subribe_topic called" << std::endl;
     if (RC != 0) {
-        Php::error << "solcw_subscribe_topic: API/session not initialized" << std::endl;
+        Php::error << "solcc_subscribe_topic: API/session not initialized" << std::endl;
         return ;
     }
     if (params.size() != 2) {
-        Php::error << "solcw_subscribe_topic: incorrect number of arguments" << std::endl;
+        Php::error << "solcc_subscribe_topic: incorrect number of arguments" << std::endl;
         return ;
     }
     std::string dest = (std::string)(params[0]) ;
@@ -432,7 +433,7 @@ void solcw_subscribe_topic ( Php::Parameters &params) {
 /*************************************************************************
  * Subscribe - queue
  *************************************************************************/
-void solcw_subscribe_queue ( Php::Parameters &params) {
+void solcc_subscribe_queue ( Php::Parameters &params) {
  
     /* Flow */
     solClient_flow_createFuncInfo_t flowFuncInfo = SOLCLIENT_FLOW_CREATEFUNC_INITIALIZER;
@@ -446,13 +447,13 @@ void solcw_subscribe_queue ( Php::Parameters &params) {
     int             propIndex;
 
 
-    if (Verbose) Php::out << "### solcw_subscribe_queue called" << std::endl;
+    if (Verbose) Php::out << "### solcc_subscribe_queue called" << std::endl;
     if (RC != 0) {
-        Php::error << "solcw_subscribe_queue: API/session not initialized" << std::endl;
+        Php::error << "solcc_subscribe_queue: API/session not initialized" << std::endl;
         return ;
     }
     if (params.size() != 2) {
-        Php::error << "solcw_subscribe_queue: incorrect number of arguments" << std::endl;
+        Php::error << "solcc_subscribe_queue: incorrect number of arguments" << std::endl;
         return ;
     }
 
@@ -485,7 +486,7 @@ void solcw_subscribe_queue ( Php::Parameters &params) {
     /* Check if the endpoint provisioning is support */
     if ( !solClient_session_isCapable ( session_p, SOLCLIENT_SESSION_CAPABILITY_ENDPOINT_MANAGEMENT ) ) {
 
-        Php::error << "solcw_subscribe_queue: Endpoint management not supported on this appliance" << std::endl;
+        Php::error << "solcc_subscribe_queue: Endpoint management not supported on this appliance" << std::endl;
         return ;
     }
 
@@ -540,11 +541,11 @@ void solcw_subscribe_queue ( Php::Parameters &params) {
 /*************************************************************************
  * Unsubscribe
  *************************************************************************/
-void solcw_unsubscribe_topic () {
+void solcc_unsubscribe_topic () {
 
-    if (Verbose) Php::out << "### solcw_unsubscribe_topic called" << std::endl;
+    if (Verbose) Php::out << "### solcc_unsubscribe_topic called" << std::endl;
     if (RC != 0) {
-        Php::error << "solcw_unsubscribe_topic: API/session not initialized" << std::endl;
+        Php::error << "solcc_unsubscribe_topic: API/session not initialized" << std::endl;
         return ;
     }
     //std::string dest = (std::string)(params[0]) ;
@@ -558,11 +559,11 @@ void solcw_unsubscribe_topic () {
 /*************************************************************************
  * Cleanup & exit
  *************************************************************************/
-void solcw_cleanup() {
+void solcc_cleanup() {
 
-    if (Verbose) Php::out << "### solcw_cleannup called" << std::endl;
+    if (Verbose) Php::out << "### solcc_cleannup called" << std::endl;
     if (RC != 0) {
-        Php::error << "solcw_cleanup: API/session not initialized" << std::endl;
+        Php::error << "solcc_cleanup: API/session not initialized" << std::endl;
         return ;
     }
     /* Destroy the Flow */
@@ -583,14 +584,14 @@ void solcw_cleanup() {
 extern "C" {
     PHPCPP_EXPORT void *get_module() {
         static Php::Extension extension("solace-smf-wrapper", "1.0");
-        extension.add<solcw_init>("solcw_init");
-        extension.add<solcw_connect>("solcw_connect");
-        extension.add<solcw_publish_topic>("solcw_publish_topic");
-        extension.add<solcw_publish_queue>("solcw_publish_queue");
-        extension.add<solcw_subscribe_topic>("solcw_subscribe_topic");
-        extension.add<solcw_subscribe_queue>("solcw_subscribe_queue");
-        extension.add<solcw_unsubscribe_topic>("solcw_unsubscribe_topic");
-        extension.add<solcw_cleanup>("solcw_cleanup");
+        extension.add<solcc_init>("solcc_init");
+        extension.add<solcc_connect>("solcc_connect");
+        extension.add<solcc_publish_topic>("solcc_publish_topic");
+        extension.add<solcc_publish_queue>("solcc_publish_queue");
+        extension.add<solcc_subscribe_topic>("solcc_subscribe_topic");
+        extension.add<solcc_subscribe_queue>("solcc_subscribe_queue");
+        extension.add<solcc_unsubscribe_topic>("solcc_unsubscribe_topic");
+        extension.add<solcc_cleanup>("solcc_cleanup");
         return extension;
     }
 }

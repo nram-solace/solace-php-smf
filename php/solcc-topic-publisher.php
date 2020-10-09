@@ -1,11 +1,25 @@
 <?php
+
+    $solace_url = "localhost:55555";
+    $vpn = "default" ;
+    $user = "default" ;
+    $pass = "default" ;
+    $topic_prefix = "test/php" ;
+
+    $verbose = 1;
+    $nmsgs = 10 ;
+
     echo("calling solace-smf-wrapper\n");
 
-    echo(solcw_init("127.0.0.1:55555", "default", "default", "default", 0));
-    echo(solcw_connect());
+    solcc_init($solace_url, $vpn, $user, $pass, $verbose);
+    echo(solcc_connect());
     for ($x = 0; $x < 10; $x++) {
-        echo(solcw_publish_topic("test/php/$x", "Hello ($x) from PHP"));
+        $topic = "$topic_prefix/$x" ;
+        $data = "Hello ($x) from PHP to topic" ;
+        echo(solcc_publish_topic($topic, $data));
+        # FIXME: Allow time for ack
+        sleep(1);
     }
-    echo(solcw_cleanup());
+    echo(solcc_cleanup());
     echo("done\n");
 ?>
