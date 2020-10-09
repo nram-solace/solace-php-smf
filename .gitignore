@@ -1,5 +1,0 @@
-.gitignore
-**/*.so
-**/*.o
-.vscode/**
-tmp/**
