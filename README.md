@@ -68,14 +68,15 @@ So, first you have to define a callback function in PHP to receive messages and 
 
 Its quite similar to topic publishing and subscribing.
 
+### Sample scripts
+
+[php folder](https://github.com/nram-dev/solace-php-smf/tree/master/php) has some sample scripts.
+Pl take a look at solcc-topic-publisher.php for checks to make PHP callable from CLI as well as from browser.
+
 ### Calling from HTML
 
 Call PHP scripts normally as you would from HTML. Some of these calls are blocking calls, so take that into consideration
 in desigining responsive UI.
-
-### Sample scripts
-
-[php folder](https://github.com/nram-dev/solace-php-smf/tree/master/php) has some sample scripts.
 [HTML folder](https://github.com/nram-dev/solace-php-smf/tree/master/html) has HTML form samples.
 
 ## INSTALLATION
