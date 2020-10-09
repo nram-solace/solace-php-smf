@@ -8,23 +8,21 @@
         echo "\n===\n";
     }
 
-    echo("calling solace-smf-wrapper\n");
 
     $solace_url = "localhost:55555";
     $vpn = "default" ;
     $user = "default" ;
     $pass = "default" ;
-    $sub_topic = "test/php/>" ;
+    $qname = "TestQ" ;
     $msg_callback_fn = "php_msgReceiveCallback" ;
-    $verbose = 0;
+    $verbose = 1;
 
     solcw_init($solace_url, $vpn, $user, $pass, $verbose);
     solcw_connect();
-    solcw_subscribe_topic($sub_topic, $msg_callback_fn);
+    solcw_subscribe_queue($qname, $msg_callback_fn);
 
     sleep (120);
 
-    solcw_unsubscribe_topic();
     solcw_cleanup();
     echo("done\n");
 ?>
