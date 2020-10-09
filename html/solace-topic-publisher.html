@@ -1,14 +1,19 @@
 <html>
     <body>
+    <h3>PHP/Solace SMF Extension </h3>
+    <a href="http://www.php-cpp.com/">PHP-CPP</a> extension to support Solace SMF API
+    <hr>
+        <form action="../php/solcc-topic-publisher.php" method="post">
+        <table>
+            <tr><td>Broker URL</td>         <td><input type="text" name="url" value="localhost:55555"/> </td></tr>
+            <tr><td>VPN Name</td>           <td><input type="text" name="vpn" value="default"/>         </td></tr>
+            <tr><td>Client username</td>    <td><input type="text" name="user" value="default" />       </td></tr>
+            <tr><td>Client password</td>    <td><input type="password" name="pass" />                   </td></tr>
+            <tr><td>Topic Name</td>         <td><input type="text" name="topic" value="test/php/100" /> </td></tr>
 
-        <form action="solace-lib.php" method="post">
-            Broker URL      : <input type="text" name="broker_url" /><br />
-            VPN Name        : <input type="text" name="vpnname" /><br />
-            Client username : <input type="text" name="client_username" /><br />
-            Client password : <input type="text" name="client_password" /><br />
-            Topic Name      : <input type="text" name="topic_name" /><br />
-
-            <input type="submit" name="submit" value="Connect" />
+            <!--nmsgs           : <input type="text" name="nmsgs" value="10"/><br /> -->
+            <tr/><tr><td/>                       <td><input type="submit" name="submit" value="Publish" />   </td></tr>
+        </table>   
         </form>
     </body>
 </html>

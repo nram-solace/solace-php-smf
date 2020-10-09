@@ -583,7 +583,7 @@ void solcc_cleanup() {
  *************************************************************************/
 extern "C" {
     PHPCPP_EXPORT void *get_module() {
-        static Php::Extension extension("solace-smf-wrapper", "1.0");
+        static Php::Extension extension("solace-smf-extension", "1.0");
         extension.add<solcc_init>("solcc_init");
         extension.add<solcc_connect>("solcc_connect");
         extension.add<solcc_publish_topic>("solcc_publish_topic");
