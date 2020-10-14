@@ -7,22 +7,14 @@ A PHP extension providing C bindings to [Solace](www.solace.com).
 Using the [PHP-CPP](http://www.php-cpp.com/) framework, this extension enables PHP scripts to call 
 Solace APIs using native SMF (Solace message format) protocol with CCSMP libraries.
 
-**Solace**
-
-[Solace PubSub+](https://docs.solace.com/) is a an advanced and versatile event broker supporting a number of protocols (such as SMF, JMS, MQTT, AMQP, REST) and language bindings (C, .NET, Java,...).
+**Solace**: [Solace PubSub+](https://docs.solace.com/) is a an advanced and versatile event broker supporting a number of protocols (such as SMF, JMS, MQTT, AMQP, REST) and language bindings (C, .NET, Java,...).
 As of Oct 2020, PHP is not natively supported.
 
-**SMF**
+**SMF**: [Solace Message Format](https://docs.solace.com/PubSub-ConceptMaps/Component-Maps.htm#SMF) is the native messaging format supported by Solace.
 
-[Solace Message Format](https://docs.solace.com/PubSub-ConceptMaps/Component-Maps.htm#SMF) is the native messaging format supported by Solace.
+**CCSMP**: [CCSMP](https://docs.solace.com/API-Developer-Online-Ref-Documentation/c/index.html) or SolClient is the Solace C bindings library supported by Solace.
 
-**CCSMP**
-
-[CCSMP](https://docs.solace.com/API-Developer-Online-Ref-Documentation/c/index.html) or SolClient is the Solace C bindings library supported by Solace.
-
-**PHP-CPP**
-
-[PHP-CPP](http://www.php-cpp.com/) is a C++ library for developing PHP extensions.
+**PHP-CPP**: [PHP-CPP](http://www.php-cpp.com/) is a C++ library for developing PHP extensions.
 
 ## DISCLAIMER
 
@@ -80,6 +72,8 @@ in desigining responsive UI.
 [HTML folder](https://github.com/nram-dev/solace-php-smf/tree/master/html) has HTML form samples.
 
 ## INSTALLATION
+
+This has been tested to work on CentOS 8 and MacOS Catalina with SolOS 9.6.
 
 ### 0. Prerequisites
 
