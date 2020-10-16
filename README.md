@@ -7,8 +7,7 @@ A PHP extension providing C bindings to [Solace](www.solace.com).
 Using the [PHP-CPP](http://www.php-cpp.com/) framework, this extension enables PHP scripts to call 
 Solace APIs using native SMF (Solace message format) protocol with CCSMP libraries.
 
-**Solace**: [Solace PubSub+](https://docs.solace.com/) is a an advanced and versatile event broker supporting a number of protocols (such as SMF, JMS, MQTT, AMQP, REST) and language bindings (C, .NET, Java,...).
-As of Oct 2020, PHP is not natively supported.
+**Solace**: [Solace PubSub+](https://docs.solace.com/) APIs provide a variety of on-ramps and off-ramps to the event mesh, with support for open standard protocols and APIs (MQTT, AMQP, JMS, REST) as well as proprietary messaging APIs. This enables connecting legacy and modern applications, edge streaming technologies (StreamSets, Striim, Adaptris, ASAPIO, Dell Boomi) to integrate 3rd party applications, and connectors for technologies like Kafka. As of Oct 2020, PHP API is not natively supported in Solace.
 
 **SMF**: [Solace Message Format](https://docs.solace.com/PubSub-ConceptMaps/Component-Maps.htm#SMF) is the native messaging format supported by Solace.
 
