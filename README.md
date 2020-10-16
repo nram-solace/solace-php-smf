@@ -7,9 +7,11 @@ A PHP extension providing C bindings to [Solace](www.solace.com).
 Using the [PHP-CPP](http://www.php-cpp.com/) framework, this extension enables PHP scripts to call 
 Solace APIs using native SMF (Solace message format) protocol with CCSMP libraries.
 
-**Solace**: [Solace PubSub+](https://docs.solace.com/) APIs provide a variety of on-ramps and off-ramps to the event mesh, with support for open standard protocols and APIs (MQTT, AMQP, JMS, REST) as well as proprietary messaging APIs. This enables connecting legacy and modern applications, edge streaming technologies (StreamSets, Striim, Adaptris, ASAPIO, Dell Boomi) to integrate 3rd party applications, and connectors for technologies like Kafka. As of Oct 2020, PHP API is not natively supported in Solace.
+**Solace**: [Solace PubSub+ Platform](https://docs.solace.com/Solace-PubSub-Platform.htm) is a complete event streaming and management platform for real-time enterprises. PubSub+ helps enterprises design, deploy and manage event-driven architectures across hybrid cloud, multi-cloud and IoT environments.
 
-**SMF**: [Solace Message Format](https://docs.solace.com/PubSub-ConceptMaps/Component-Maps.htm#SMF) is the native messaging format supported by Solace.
+PubSub+ event brokers power the **Event Mesh**, a modern messaging layer that can be deployed across every environment (Cloud, Software, Appliance) and component of the distributed enterprise to stream events across. PubSub+ APIs provide support for open protocols and APIs (MQTT, AMQP, JMS, REST) as well as proprietary messaging APIs. Solace APIs are available for several laugnages including Java, C, C++, JavaScript, .NET.
+
+**SMF**: [Solace Message Format](https://docs.solace.com/PubSub-ConceptMaps/Component-Maps.htm#SMF) is the native transport protocol supported in Solace.
 
 **CCSMP**: [CCSMP](https://docs.solace.com/API-Developer-Online-Ref-Documentation/c/index.html) or SolClient is the Solace C bindings library supported by Solace.
 
