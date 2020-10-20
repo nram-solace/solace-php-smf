@@ -74,7 +74,12 @@ in desigining responsive UI.
 
 ## INSTALLATION
 
-This has been tested to work on CentOS 8 and MacOS Catalina with SolOS 9.6.
+This has been tested to work on the following:
+
+* CentOS 8
+* MacOS Catalina
+* SolOS 9.6
+* PHP 7.3.X & 7.4.X
 
 ### 0. Prerequisites
 

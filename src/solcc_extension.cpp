@@ -9,6 +9,10 @@
  *  Usage
  *     See php/solcc-xxx.php and html/solcc-xxx.html files
  * 
+ * DISCLAIMER
+ *   This is an experimental and prototype implementation. 
+ *   This is NOT a Solace product and not covered by Solace support.
+ * 
  *  Author
  *    Ramesh Natarajan, Solace
  *    Oct 08, 2020
